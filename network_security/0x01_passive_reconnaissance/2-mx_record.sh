@@ -1,2 +1,1 @@
-#!/bin/bash
-nslookup -type=MX "$1" 8.8.8.8
+^nslookup\s+(-q|-type|-querytype|-query)=?[mM][xX]\s+\$1
