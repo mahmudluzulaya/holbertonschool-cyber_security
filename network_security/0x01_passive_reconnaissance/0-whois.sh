@@ -1,2 +1,2 @@
 #!/bin/bash
-whois "$1" | awk '/Registrant|Admin|Tech/ {gsub(/^ +| +$/,""); gsub(/: +/,":"); print $1","substr($0,index($0,$2))}' > "$1.csv"
+whois "$1" | awk -F: '/Registrant|Admin|Tech/ {gsub(/^ +| +$/,"",$2); space=($1~/Street/?" ":""); ext=($1~/Ext/ && $2=="")?":":""; print $1 ext "," $2 space}' 
