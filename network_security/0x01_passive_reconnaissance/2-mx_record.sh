@@ -1,1 +1,2 @@
-^nslookup\s+(-q|-type|-querytype|-query)=?[mM][xX]\s+\$1
+#!/bin/bash
+nslookup -query=MX $1
