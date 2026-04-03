@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 import sys
 
+
 def error():
     print("Usage: read_write_heap.py pid search_string replace_string")
     sys.exit(1)
+
 
 if len(sys.argv) != 4:
     error()
