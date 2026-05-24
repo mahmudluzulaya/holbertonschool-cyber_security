@@ -59,6 +59,7 @@ elsif options[:list]
   tasks.each do |task|
     puts task
   end
+  puts "" # Testin gözlədiyi sondakı boş sətir (new line) üçün
 elsif options[:remove]
   tasks = read_tasks
   index_to_remove = options[:remove] - 1
