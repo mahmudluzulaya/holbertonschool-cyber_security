@@ -55,12 +55,9 @@ if options[:add]
   puts "Task '#{options[:add]}' added."
 elsif options[:list]
   tasks = read_tasks
-  if tasks.empty?
-    # Boş olduqda heç nə çap etmir və ya lazım gəlsə mesaj çıxara bilərsiniz
-  else
-    tasks.each_with_index do |task, index|
-      puts "#{index + 1}. #{task}"
-    end
+  puts "Tasks:"
+  tasks.each do |task|
+    puts task
   end
 elsif options[:remove]
   tasks = read_tasks
@@ -72,6 +69,5 @@ elsif options[:remove]
     puts "Task '#{removed_task}' removed."
   end
 else
-  # Heç bir parametr daxil edilmədikdə kömək menyusunu göstərir
   puts opt_parser
 end
