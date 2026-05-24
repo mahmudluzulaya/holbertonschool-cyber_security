@@ -54,12 +54,16 @@ if options[:add]
   write_tasks(tasks)
   puts "Task '#{options[:add]}' added."
 elsif options[:list]
-  tasks = read_tasks
-  puts "Tasks:"
-  tasks.each do |task|
-    puts task
+  if File.exist?(FILE_PATH)
+    # Faylın daxilindəki mətni olduğu kimi oxuyub ekrana veririk
+    content = File.read(FILE_PATH)
+    puts "Tasks:"
+    print content
+    puts "" # Sondakı boş sətir üçün
+  else
+    puts "Tasks:"
+    puts ""
   end
-  puts "" # Testin gözlədiyi sondakı boş sətir (new line) üçün
 elsif options[:remove]
   tasks = read_tasks
   index_to_remove = options[:remove] - 1
