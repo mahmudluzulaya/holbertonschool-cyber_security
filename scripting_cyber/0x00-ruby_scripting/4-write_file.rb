@@ -1,4 +1,4 @@
-re 'json'
+require 'json'
 
 def merge_json_files(file1_path, file2_path)
     return unless File.exist?(file1_path) && File.exist?(file2_path)
@@ -14,4 +14,6 @@ def merge_json_files(file1_path, file2_path)
                 File.open(file2_path, 'w') do |f|
                       f.write(JSON.pretty_generate(merged_data))
                         end
+
+                  puts "Merged JSON written to #{file2_path}"
 end
