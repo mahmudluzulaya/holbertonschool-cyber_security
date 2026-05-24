@@ -1,25 +1,10 @@
 #!/usr/bin/env ruby
 require 'optparse'
 
-FILE_PATH = 'tasks.txt'
-
-def read_tasks
-  if File.exist?(FILE_PATH)
-    File.readlines(FILE_PATH).map(&:strip)
-  else
-    []
-  end
-end
-
-def write_tasks(tasks)
-  File.open(FILE_PATH, 'w') do |file|
-    tasks.each { |task| file.puts(task) }
-  end
-end
-
+FILE_NAME = 'tasks.txt'
 options = {}
 
-opt_parser = OptionParser.new do |opts|
+OptionParser.new do |opts|
   opts.banner = "Usage: cli.rb [options]"
 
   opts.on("-a", "--add TASK", "Add a new task") do |task|
@@ -38,41 +23,37 @@ opt_parser = OptionParser.new do |opts|
     puts opts
     exit
   end
-end
-
-begin
-  opt_parser.parse!(ARGV)
-rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
-  puts e.message
-  puts opt_parser
-  exit
-end
+end.parse!
 
 if options[:add]
-  tasks = read_tasks
-  tasks << options[:add]
-  write_tasks(tasks)
+  File.open(FILE_NAME, "a") do |file|
+    file.puts(options[:add])
+  end
   puts "Task '#{options[:add]}' added."
-elsif options[:list]
-  if File.exist?(FILE_PATH)
-    # Faylın daxilindəki mətni olduğu kimi oxuyub ekrana veririk
-    content = File.read(FILE_PATH)
-    puts "Tasks:"
-    print content
-    puts "" # Sondakı boş sətir üçün
-  else
-    puts "Tasks:"
-    puts ""
-  end
-elsif options[:remove]
-  tasks = read_tasks
-  index_to_remove = options[:remove] - 1
+end
 
-  if index_to_remove >= 0 && index_to_remove < tasks.length
-    removed_task = tasks.delete_at(index_to_remove)
-    write_tasks(tasks)
-    puts "Task '#{removed_task}' removed."
+if options[:list]
+  if File.exist?(FILE_NAME)
+    tasks = File.readlines(FILE_NAME)
+    # Əgər fayl boş deyilsə, əvvəlcə "Tasks:" başlığını çap edirik
+    if tasks.any?
+      puts "Tasks:"
+      tasks.each_with_index do |line, index|
+        puts "#{index + 1}. #{line.chomp}"
+      end
+    end
   end
-else
-  puts opt_parser
+end
+
+if options[:remove]
+  if File.exist?(FILE_NAME)
+    tasks = File.readlines(FILE_NAME)
+    index = options[:remove] - 1
+    
+    if index >= 0 && index < tasks.length
+      removed_task = tasks.delete_at(index).chomp
+      File.write(FILE_NAME, tasks.join)
+      puts "Task '#{removed_task}' removed."
+    end
+  end
 end
